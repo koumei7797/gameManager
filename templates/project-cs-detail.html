@@ -1,0 +1,136 @@
+{{ template "header.html" .}}
+
+{{ template "project-sidebar.html" .}}
+
+{{$time2000 := .time2000}}
+
+<!-- setCSReward modal -->
+<div class="modal fade bs-csReward-modal-sg" id="setCSRewardModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sg">
+    <div class="modal-content">
+      <form method="POST" action="/project/{{.projectUID}}/cs/setReward" enctype="multipart/form-data">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Reward</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">PackageName</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="packageName" name="packageName" readonly="readonly" required="required" class="form-control" value="{{.packageName}}">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">ProjectUID</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="projectUID" name="projectUID" readonly="readonly" required="required" class="form-control" value="{{.projectUID}}">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">CsName</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="csName" name="csName" readonly="readonly" required="required" class="form-control" value="{{.csName}}">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Reward Type</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <select class="form-control" id="type" name="type">
+                <option>Reward Type</option>
+                {{range .csRewardTypeArray}}
+                  <option>{{.}}</option>
+                {{end}}
+              </select>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Value</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="number" min="1" max="1000000000" id="value" name="value" required="required" class="form-control">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Memo</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="memo" name="memo" required="required" class="form-control">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- /setCSReward modal -->
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left h3">
+        <img src="data:image/png;base64,{{.image_DataURI}}" height="32" width="32">
+        {{.name}} ({{.packageName}}) <i class="fa fa-angle-double-right"></i> <i class="fa fa-users"></i> CS </a> <i class="fa fa-angle-double-right"></i> {{.csName}}</li>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>    
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_content">
+            <div class="x_title">
+              <h2>{{.csName}}</h2>
+              <div class="clearfix"></div>
+            </div>
+      
+            <!-- start csDetailArray -->
+            <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>RewardObj</th>
+                  <th>InsertedTime</th>
+                  <th>GettingTime</th>
+                  <th>Memo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{range .csDetailArray}}
+                  <tr>
+                    <td><h5>{{.RewardObj}}</h5></td>
+                    <td><h5>{{.InsertedTime.Format "2006-01-02 15:04"}}</h5></td>
+                    <td><h5>{{.View_Getting}}</h5></td>
+                    <td><h5>{{.Memo}}</h5></td>
+                  </tr>
+                {{end}}
+              </tbody>
+            </table>
+            <!-- end csDetailArray -->
+          </div>
+
+          <div style="text-align:right">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-csReward-modal-sg"><i class="fa fa-gift"></i> Reward</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+
+{{ template "footer.html" .}}

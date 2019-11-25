@@ -1,0 +1,119 @@
+{{ template "header.html" .}}
+
+{{ template "project-sidebar.html" .}}
+
+{{$bannerUID := .bannerUID}}
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left h3">
+          <img src="data:image/png;base64,{{.image_DataURI}}" height="32" width="32">
+        {{.name}} ({{.packageName}}) <i class="fa fa-angle-double-right"></i> <i class="fa fa-cog"></i> Config </a></li>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_content">
+            <div class="x_title">
+              <h2>Inapp Product Add Percent</h2>
+              <div class="clearfix"></div>
+            </div>
+      
+            <form method="POST" action="/project/{{.projectUID}}/config/set" enctype="multipart/form-data">
+
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">ProjectUID</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input type="text" id="projectUID" name="projectUID" readonly="readonly" required="required" value="{{.projectUID}}" class="form-control">
+                </div>
+                <div class="clearfix"></div>
+              </div>
+        
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Current Percent</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input type="text" id="cur-percent" name="cur-percent" readonly="readonly" required="required" value="{{.inappPercent}}%" class="form-control">
+                </div>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-3" for="last-name">Edit Percent</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input type="number" id="edit-percent" name="edit-percent" min="0" max="100" placeholder="전체 상품에 N% 적용 가능" class="form-control">
+                </div>
+                <div class="clearfix"></div>
+              </div>
+
+              </br>
+              </br>
+              </br>
+
+              <div class="x_title">
+                <h2>Setting banner</h2>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="form-group">
+                <!-- start bannerArray -->
+                <table class="table table-striped" cellspacing="0" width="100%">
+                  <thead>
+                    <tr>
+                      <th>Choose</th>
+                      <th>Image</th>
+                      <th>Name</th>
+                      <th>RegTime</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Not used setup -->
+                    {{if eq 0 $bannerUID}}
+                      <td><div class="radio"><input type="radio" checked="checked" id="banner-select" name="banner-select" class="flat" value="0"></div></td>
+                    {{else}}
+                      <td><div class="radio"><input type="radio" id="banner-select" name="banner-select" class="flat" value="0"></div></td>
+                    {{end}}
+                    <td><h5>Not used</h5></td>
+                    <td><h5>Not used</h5></td>
+                    <td><h5>Not used</h5></td>
+                    <!-- Not used setup -->
+
+                    {{range .bannerArray}}
+                      <tr>
+                        {{if eq .BannerUID $bannerUID}}
+                          <td><div class="radio"><input type="radio" checked="checked" id="banner-select" name="banner-select" class="flat" value="{{.BannerUID}}"></div></td>
+                        {{else}}
+                          <td><div class="radio"><input type="radio" id="banner-select" name="banner-select" class="flat" value="{{.BannerUID}}"></div></td>
+                        {{end}}
+                        
+                        <td><img src="data:image/png;base64,{{.Image_DataURI}}" width="210" height="48"></td>
+                        <td><h5>{{.Name}}</h5></td>
+                        <td><h5><time>{{.RegTime.Format "2006-01-02 15:04"}}</time></h5></td>
+                      </tr>
+                    {{end}}
+                  </tbody>
+                </table>
+                <!-- end bannerArray -->
+              </div>
+
+              <!-- Button line -->
+              <div class="x_title"><div class="clearfix"></div></div>
+              <div style="text-align:right">
+                <button style="float: right;" type="submit" class="btn btn-primary"><i class="fa fa-external-link"></i> Save changes</button>
+              </div>
+              
+            </form>
+          </div>          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+      
+{{ template "footer.html" .}}

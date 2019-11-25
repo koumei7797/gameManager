@@ -1,0 +1,156 @@
+{{ template "header.html" .}}
+
+{{ template "project-sidebar.html" .}}
+
+<!-- setRewardType modal -->
+<div class="modal fade bs-setRewardType-modal-sg" id="setRewardTypeModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sg">
+    <div class="modal-content">
+      <form method="POST" action="/project/{{.projectUID}}/cs/setRewardType" enctype="multipart/form-data">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Change RewardType</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">PackageName</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="packageName" name="packageName" readonly="readonly" required="required" class="form-control" value="{{.packageName}}">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">ProjectUID</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="projectUID" name="projectUID" readonly="readonly" required="required" class="form-control" value="{{.projectUID}}">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">RewardType (Now)</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <select class="form-control" id="type" name="type" readonly="readonly">
+                <option>Reward Type (Now)</option>
+                {{range .csRewardTypeArray}}
+                  <option>{{.}}</option>
+                {{end}}
+              </select>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">RewardType</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="rewardType" name="rewardType" required="required" class="form-control" placeholder="덮어쓰기로 적용 구분자 콤마(,) ex) gold, jewel">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- /setRewardType modal -->
+
+{{$url := .url}}
+{{$projectUID := .projectUID}}
+{{$page := .page}}
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left h3">
+        <img src="data:image/png;base64,{{.image_DataURI}}" height="32" width="32">
+        {{.name}} ({{.packageName}}) <i class="fa fa-angle-double-right"></i> <i class="fa fa-users"></i> CS </a></li>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_content">
+            <div class="x_title">
+              <h2>CS</h2>
+              <div class="clearfix"></div>
+            </div>
+
+            <!-- Search form -->
+            <form class="form-horizontal form-label-left input_mask" method="POST" action="/project/{{.projectUID}}/cs-detail" enctype="multipart/form-data">
+              <div class="form-group">
+                <label class="control-label col-md-9 col-sm-9 col-xs-12">CsName</label>
+                <div class="input-group">
+                  <input type="text" id="csName" name="csName" required="required" class="form-control" placeholder="ex) C4CA">
+                  <span class="input-group-btn"><button type="submit" class="btn btn-primary">Search</button></span>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </form>
+      
+            <!-- start csArray -->
+            <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>CsName</th>
+                  <th>IP</th>
+                  <th>RegTime</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{range .csArray}}
+                  <tr>
+                    <td><button type="button" style="width:160px" class="btn btn-default btn-sm" onclick="location.href='{{$url}}project/{{$projectUID}}/cs-detail/{{.CsName}}'">{{.CsName}}</button></td>
+                    <td><h5>{{.IP}}</h5></td>
+                    <td><h5><time>{{.RegTime.Format "2006-01-02 15:04"}}</time></h5></td>
+                  </tr>
+                {{end}}
+              </tbody>
+            </table>
+            <!-- end csArray -->
+
+            <div class="text-center">
+              <div class="btn-group">
+                {{if gt .pageInfo.BeginPage 10}}
+                  <button type="button" class="btn btn-info" onclick="location.href='{{$url}}project/{{$projectUID}}/cs/{{.pageInfo.PrevBeginPage}}'"><i class="fa fa-caret-left"></i></button>
+                {{end}}
+                
+                {{range .pageInfo.Pagenation}}
+                  {{if eq . $page}}
+                    <button type="button" class="btn btn-info active" onclick="location.href='{{$url}}project/{{$projectUID}}/cs/{{.}}'">{{.}}</button>
+                  {{else}}
+                    <button type="button" class="btn btn-info" onclick="location.href='{{$url}}project/{{$projectUID}}/cs/{{.}}'">{{.}}</button>
+                  {{end}}
+                {{end}}
+
+                {{if lt .pageInfo.EndPage .pageInfo.TotalPage}}
+                  <button type="button" class="btn btn-info" onclick="location.href='{{$url}}project/{{$projectUID}}/cs/{{.pageInfo.NextEndPage}}'"><i class="fa fa-caret-right"></i></button>
+                {{end}}
+              </div>
+            </div>
+
+            <div style="text-align:right">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-setRewardType-modal-sg"><i class="fa fa-external-link"></i> Change RewardType</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+
+{{ template "footer.html" .}}

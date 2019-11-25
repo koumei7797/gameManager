@@ -1,0 +1,22 @@
+{{ template "header.html" .}}
+
+{{ template "project-sidebar.html" .}}
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+      <div class="page-title">
+        <div class="title_left h3">
+          <img src="data:image/png;base64,{{.image_DataURI}}" height="32" width="32">
+          {{.name}} ({{.packageName}})
+        </div>
+      </div>
+      
+      <div class="clearfix"></div>
+
+
+    </div>
+</div>
+<!-- /page content -->
+
+{{ template "footer.html" .}}

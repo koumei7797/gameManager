@@ -1,0 +1,220 @@
+{{ template "header.html" .}}
+
+{{ template "project-list-sidebar.html" .}}
+
+<!-- addProject modal -->
+<div class="modal fade bs-addProject-modal-sg" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sg">
+    <div class="modal-content">
+      <form method="POST" action="/addProject" enctype="multipart/form-data">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Add a project</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Package name</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="packageName" name="packageName" placeholder="com.company.project" required="required" class="form-control">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Name [한글]</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="appName" name="appName" placeholder="App Name" required="required" class="form-control">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Platform</label>
+            <div class="radio">
+              <label><input type="radio" id="platform" class="flat" name="platform" required="required" value="1">Android</label>
+              <label><input type="radio" id="platform" class="flat" name="platform" value="2">iOS</label>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Image</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type='file' id="image" name="image" accept=".png, .jpeg, .jpg" required="required" onchange=validateFileType()>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
+<!-- /addProject modal -->
+<!-- delProject modal -->
+<div class="modal fade bs-delProject-modal-sg" id="delProjectModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sg">
+    <div class="modal-content">
+      <form method="POST" action="/delProject" enctype="multipart/form-data">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Delete</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Package name</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="del-project-package-name" name="del-project-package-name" readonly="readonly" required="required" class="form-control">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Name [한글]</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="del-project-name" name="del-project-name" readonly="readonly" required="required" class="form-control">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- /delProject modal -->
+<!-- setProject modal -->
+<div class="modal fade bs-setProject-modal-sg" id="setProjectModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sg">
+    <div class="modal-content">
+      <form method="POST" action="/setProject" enctype="multipart/form-data">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myModalLabel">Project Setting</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">PackageName</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="set-project-package-name" name="set-project-package-name" readonly="readonly" required="required" class="form-control">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Name [한글]</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="set-project-name" name="set-project-name" required="required" class="form-control">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Version</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" id="set-version" name="set-version" required="required" class="form-control has-feedback-left col-md-5">
+              <span class="fa fa-bolt form-control-feedback left" aria-hidden="true"></span>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Image</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type='file' id="set-image" name="set-image" accept=".png, .jpeg, .jpg">
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- /setProject modal -->
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Project list</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <!-- start project list -->
+            <table id="datatable-responsive" class="table table-striped dt-responsive nowrap" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>Icon</th>
+                  <th>Project Name</th>
+                  <th>Package Name</th>
+                  <th>Platform</th>
+                  <th>Version</th>
+                  <th>Created</th>
+                  <th>Last Update</th>
+                  <th>Setting</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{range .projectArray}}
+                  <tr>
+                    <td><img src="data:image/png;base64,{{.Image_DataURI}}" height="32" width="32"></td>
+
+                    <td><button type="button" style="width:160px" class="btn btn-primary" onclick="location.href='/project/{{.ProjectUID}}'">{{.Name}}</button></td>
+
+                    <td><h5>{{.PackageName}}</h5></td>
+
+                    {{if eq .Platform 1}}
+                      <td><h2><i class="fa fa-android"></i></h2></td>
+                    {{else if eq .Platform 2}}
+                      <td><h2><i class="fa fa-apple"></i></h2></td>
+                    {{end}}
+
+                    <td><h5>{{.Version}}</h5></td>
+
+                    <td><h5><time>{{.RegTime.Format "2006-01-02 15:04"}}</time></h5></td>
+                    
+                    <td><h5><time>{{.LastUpdateTime.Format "2006-01-02 15:04"}}</time></h5></td>
+
+                    <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-setProject-modal-sg"
+                      data-project-package-name={{.PackageName}} data-project-name={{.Name}} data-project-version={{.Version}} data-project-uid={{.ProjectUID}}>
+                      <i class="fa fa-pencil"></i> Setting</button></td>
+
+                    <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-delProject-modal-sg"
+                      data-project-package-name={{.PackageName}} data-project-name={{.Name}} data-project-uid={{.ProjectUID}}>
+                      <i class="fa fa-trash-o"></i> Delete</button></td>
+                  </tr>
+                {{end}}
+              </tbody>
+            </table>
+            <!-- end project list -->
+    
+          </div>
+
+          <!-- Button line -->
+          <div class="x_title"><div class="clearfix"></div></div>
+          <div style="text-align:right">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-addProject-modal-sg"><i class="fa fa-external-link"></i> Add a project</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+
+
+
+{{ template "footer.html" .}}

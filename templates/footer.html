@@ -1,0 +1,189 @@
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right"> &copy; 2018 gameManager </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{{.url}}public/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="{{.url}}public/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="{{.url}}public/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="{{.url}}public/vendors/nprogress/nprogress.js"></script>
+    <!-- iCheck -->
+    <script src="{{.url}}public/vendors/iCheck/icheck.min.js"></script>
+    <!-- morris.js [ chart ]-->
+    <script src="{{.url}}public/vendors/raphael/raphael.min.js"></script>
+    <script src="{{.url}}public/vendors/morris.js/morris.min.js"></script>
+
+    <!-- Datatables -->
+    <script src="{{.url}}public/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{.url}}public/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="{{.url}}public/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="{{.url}}public/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="{{.url}}public/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="{{.url}}public/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="{{.url}}public/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="{{.url}}public/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="{{.url}}public/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="{{.url}}public/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="{{.url}}public/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="{{.url}}public/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="{{.url}}public/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="{{.url}}public/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="{{.url}}public/vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <script type="text/javascript" charset="utf-8">
+
+      function validateFileType() {
+        var fileName = document.getElementById("image").value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile=="jpg" || extFile=="jpeg" || extFile == "png") {
+          // SUCCESS
+        } else {
+          alert("Only jpg/jpeg and png files are allowed!");
+        }
+      }      
+
+      // delProjectModal
+      $('#delProjectModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) 
+        var packageName = button.data('project-package-name')
+        var name = button.data('project-name') 
+        var uid = button.data('project-uid')
+
+        var modal = $(this)
+        modal.find('#del-project-package-name').val(packageName)
+        modal.find('#del-project-name').val(name)
+      })
+
+      // setProjectModal
+      $('#setProjectModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var packageName = button.data('project-package-name')
+        var name = button.data('project-name')
+        var uid = button.data('project-uid')
+        var version = button.data('project-version')
+
+        var modal = $(this)
+        modal.find('#set-project-package-name').val(packageName)
+        modal.find('#set-project-name').val(name)
+        modal.find('#set-version').val(version)
+      })
+
+      // delProductModal
+      $('#delProductModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var productId = button.data('inapp-product-id')
+        var title = button.data('inapp-title')
+
+        var modal = $(this)
+        modal.find('#productID').val(productId)
+        modal.find('#title').val(title)
+      })
+
+      // setBannerModal
+      $('#setBannerModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+
+        var bannerUID = button.data('banner-uid')
+        var bannerName = button.data('banner-name')
+        var androidUrl = button.data('android-url')
+        var iosUrl = button.data('ios-url')
+
+        var modal = $(this)
+        modal.find('#banner-uid').val(bannerUID)
+        modal.find('#banner-name').val(bannerName)
+        modal.find('#android-url').val(androidUrl)
+        modal.find('#ios-url').val(iosUrl)
+      })
+
+	    // Billing Charts
+      if ($('#billing_chart').length > 0){ 
+			  console.log('init_morris_charts ->', $('#billing_chart').length );
+
+			  var array = [];
+			  {{range .billingChart}}
+				  var temp = { product_id:{{.ProductID}}, count:{{.Count}} }
+				  array.push(temp)
+			  {{end}}
+
+			  Morris.Bar({
+				  element: 'billing_chart',
+				  data: array,
+				  xkey: 'product_id',
+				  ykeys: ['count'],
+				  labels: ['Count'],
+				  barRatio: 0.4,
+				  barColors: ['#26B99A', '#34495E', '#ACADAC', '#3498DB'],
+				  xLabelAngle: 0,
+				  hideHover: 'auto',
+				  resize: true
+			  });
+		  }
+      
+    </script>
+
+
+
+    <!-- project page .js Files -->
+    <!-- Chart.js -->
+    <script src="{{.url}}public/vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="{{.url}}public/vendors/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="{{.url}}public/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- Skycons -->
+    <script src="{{.url}}public/vendors/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="{{.url}}public/vendors/Flot/jquery.flot.js"></script>
+    <script src="{{.url}}public/vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="{{.url}}public/vendors/Flot/jquery.flot.time.js"></script>
+    <script src="{{.url}}public/vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="{{.url}}public/vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="{{.url}}public/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="{{.url}}public/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="{{.url}}public/vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="{{.url}}public/vendors/DateJS/build/date.js"></script>
+    <!-- JQVMap -->
+    <script src="{{.url}}public/vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="{{.url}}public/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="{{.url}}public/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{{.url}}public/vendors/moment/min/moment.min.js"></script>
+    <script src="{{.url}}public/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    
+    <!-- Ion.RangeSlider 
+    <script src="public/vendors/ion.rangeSlider/js/ion.rangeSlider.min.js"></script> 
+    -->
+    <!-- Bootstrap Colorpicker 
+    <script src="public/vendors/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+    -->
+    <!-- jquery.inputmask 
+    <script src="public/vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+    -->
+    <!-- jQuery Knob 
+    <script src="public/vendors/jquery-knob/dist/jquery.knob.min.js"></script>
+    -->
+    <!-- Cropper 
+    <script src="public/vendors/cropper/dist/cropper.min.js"></script>  
+    -->
+    
+    <!-- Custom Theme Scripts 
+    <script src="{{.url}}public/build/js/custom.js"></script>
+-->
+
+    
+    <script src="{{.url}}public/build/js/custom.min.js"></script>
+    
+  </body>
+</html>
